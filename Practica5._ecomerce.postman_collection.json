@@ -1,0 +1,1977 @@
+{
+	"info": {
+		"_postman_id": "2a730d9a-86bb-4ea2-af48-eaa025340c55",
+		"name": "Practica5._ecomerce",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "obtener categorias",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validar que tenemos un 200\r",
+							"pm.test(\"Validar status code\", ()=>{\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Validar que tenemos un Json\r",
+							"pm.test(\"Validar que el body responde en Json\", function(){\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"// Validar que el end point sirve para tener varios status code\r",
+							"pm.test(\"Validar varios status code de respuesta\", ()=>{\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 203, 204, 500]);\r",
+							"});\r",
+							"\r",
+							"// Validar que en el responde header venga un campo\r",
+							"pm.test(\"Validar que responda el header Content Type\", ()=>{\r",
+							"    pm.response.to.have.header(\"Content-Type\")\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8')\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json')\r",
+							"})\r",
+							"\r",
+							"// categories viene en el body\r",
+							"pm.test(\"El texto 'Categories' esta dentro de la respuesta\"), ()=>{\r",
+							"    pm.expect(pm.response.text()).to.include('categories');\r",
+							"}\r",
+							"\r",
+							"//Validar el tiempo de respuesta\r",
+							"pm.test(\"Validar que el tiempo de respuesta esta abajo de los 600ms\", ()=>{\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(600);\r",
+							"})\r",
+							"\r",
+							"//Para obtener el response en formato json, imprimirlo y ver su contenido\r",
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"console.log(\"Respuesta en Json \", responseJson)\r",
+							"console.log(\"valor code: \", responseJson.categories[0].categories[0].code);\r",
+							"\r",
+							"//Valida que un campo tenga un cierto valor\r",
+							"pm.test(\"Validar que uno de los codigos de las categorias sea 1020\", ()=>{\r",
+							"    pm.expect(responseJson.categories[0].categories[0].code).to.be.eql(\"1020\")\r",
+							"});\r",
+							"\r",
+							"//Valida que un campo no tenga un cierto valor\r",
+							"pm.test(\"Validar que uno de los codigos de las categorias no sea 78920\", ()=>{\r",
+							"    pm.expect(responseJson.categories[0].categories[0].code).to.not.be.eql(\"78920\")\r",
+							"});\r",
+							"\r",
+							"\r",
+							"console.log(\"Imprimir el ancho de un campo\", responseJson.categories[0].categories[1].code.length)\r",
+							"\r",
+							"//Validar que un campo tenga un cierto numero de digitos\r",
+							"pm.test(\"Validar que el campo code tenga solo 4 digitos\", ()=>{\r",
+							"    pm.expect(responseJson.categories[0].categories[1].code).to.have.lengthOf(4);\r",
+							"});\r",
+							"\r",
+							"console.log(\"Response: \", pm.response)              // imprime todo: headers y body\r",
+							"console.log(\"Response Json\", pm.response.json())    // imprime solo el body\r",
+							"\r",
+							"//Validar que no venga no venga vacio\r",
+							"pm.test(\"Validar que el response no venga vacio\", ()=>{\r",
+							"    pm.response.to.be.not.null;  // uso las palabras reservadas de postman\r",
+							"    pm.expect(pm.response.json).to.not.eql(null);  // uso las asserts de chai\r",
+							"})\r",
+							"\r",
+							"/*\r",
+							"Este test es muy util cuando el body es muy pequeno, se puede preguntar por todo el json\r",
+							"pm.test(\"Validar TODO el body\". ()=>{\r",
+							"    pm.response.to.have.body(\"categories a lot\")\r",
+							"});\r",
+							"*/"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{url_base_ecomerce}}/nga/api/v1/public/categories/insert?lang=es",
+					"protocol": "https",
+					"host": [
+						"{{url_base_ecomerce}}"
+					],
+					"path": [
+						"nga",
+						"api",
+						"v1",
+						"public",
+						"categories",
+						"insert"
+					],
+					"query": [
+						{
+							"key": "lang",
+							"value": "es"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Options de end point publicar",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Validar que no venga no venga vacio\r",
+							"pm.test(\"Validar que el response no venga vacio\", ()=>{\r",
+							"    pm.response.to.be.not.null;\r",
+							" })\r",
+							"\r",
+							"\r",
+							"//Validar que no venga no venga vacio\r",
+							"pm.test(\"Validar que el response no venga vacio\", ()=>{\r",
+							"    pm.response.to.be.not.withBody;\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "OPTIONS",
+				"header": [
+					{
+						"key": "Origin",
+						"value": "https://www.segundamano.mx",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://{{url_base_ecomerce}}/urls/v1/publicar/ad-listing?lang=es",
+					"protocol": "https",
+					"host": [
+						"{{url_base_ecomerce}}"
+					],
+					"path": [
+						"urls",
+						"v1",
+						"publicar",
+						"ad-listing"
+					],
+					"query": [
+						{
+							"key": "lang",
+							"value": "es"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear un usuario",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validar status code\", ()=>{\r",
+							"    pm.response.to.have.status(401)\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar que el body responde en Json\", function(){\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar que responda el header Content Type\", () =>{\r",
+							"    pm.response.to.have.header(\"Content-type\")\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8')\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json')\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El texto corresponde a lo esperado esta dentro de la respuesta\", ()=>{\r",
+							"    pm.expect(pm.response.text()).to.include('ACCOUNT_VERIFICATION_REQUIRED');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar que el tiempo de respuesta esta abajo de los 1500ms\", ()=>{\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+							"});\r",
+							"\r",
+							"const responseJson = pm.response.json();\r",
+							"console.log(\"Respuesta en Json \", responseJson)\r",
+							"console.log(\"Response: \", pm.response)              \r",
+							"console.log(\"Response Json\", pm.response.json())    \r",
+							"\r",
+							"pm.test(\"Validar que el response no venga vacio\", ()=>{\r",
+							"    pm.response.to.be.not.null;  \r",
+							"    pm.expect(pm.response.json).to.not.eql(null);  \r",
+							"})\r",
+							"\r",
+							"pm.test(\"Validar TODO el body\", ()=>{\r",
+							"    pm.response.to.have.body({\"error\":{\"code\":\"ACCOUNT_VERIFICATION_REQUIRED\"}})\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//user@mailinator.com  dulce<random>@mailinator.com  <random>\r",
+							"\r",
+							"let numrandom = Math.floor(Math.random() * Math.floor(654321));\r",
+							"\r",
+							"console.log(\"Numero Random, \", numrandom);\r",
+							"\r",
+							"// var email = \"dulce\" + numrandom.toString(36) + \"@mailinator.com\";  //.concat\r",
+							"var email = \"dulce\" + numrandom + \"@mailinator.com\";\r",
+							"var password = numrandom;\r",
+							"\r",
+							"console.log( \"Datos: \", email, password)\r",
+							"\r",
+							"pm.environment.set(\"email\", email)\r",
+							"pm.environment.set(\"password\", password)\r",
+							"\r",
+							"const emailFormado = email + ':' + password;\r",
+							"\r",
+							"console.log( \"Email formado: \", emailFormado)\r",
+							"\r",
+							"let encodeKeys = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(emailFormado));\r",
+							"console.log(\"Base64: \",encodeKeys);\r",
+							"\r",
+							"pm.environment.set(\"Base64\",encodeKeys);\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{email}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Origin",
+						"value": "https://www.segundamano.mx",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Base {{Base64}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"account\":{\"email\":\"{{email}}\"}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{url_base_ecomerce}}/nga/api/v1.1/private/accounts?lang=es",
+					"protocol": "https",
+					"host": [
+						"{{url_base_ecomerce}}"
+					],
+					"path": [
+						"nga",
+						"api",
+						"v1.1",
+						"private",
+						"accounts"
+					],
+					"query": [
+						{
+							"key": "lang",
+							"value": "es"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "crea un token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validar status code\", ()=>{\r",
+							"    pm.response.to.have.status(200)\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar que el body responde en Json\", function(){\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar que responda el header Content Type\", () =>{\r",
+							"    pm.response.to.have.header(\"Content-type\")\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8')\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json')\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El texto corresponde a lo esperado esta dentro de la respuesta\", ()=>{\r",
+							"    pm.expect(pm.response.text()).to.include('access_token');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar que el tiempo de respuesta esta abajo de los 1500ms\", ()=>{\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1600);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar que el response no venga vacio\", ()=>{\r",
+							"    pm.response.to.be.not.null;  \r",
+							"    pm.expect(pm.response.json).to.not.eql(null);  \r",
+							"})\r",
+							"\r",
+							"const responseJson = pm.response.json();\r",
+							"console.log(\"Respuesta en Json \", responseJson)\r",
+							"console.log(\"Response: \", pm.response)              \r",
+							"console.log(\"Response Json\", pm.response.json())\r",
+							"\r",
+							"console.log(\"Token: \", responseJson.access_token)\r",
+							"console.log(\"Account_id: \", responseJson.account.account_id)\r",
+							"console.log(\"uuid: \", responseJson.account.uuid)\r",
+							"\r",
+							"pm.environment.set(\"token\", responseJson.access_token)\r",
+							"pm.environment.set(\"account_id\", responseJson.account.account_id)\r",
+							"pm.environment.set(\"uuid\", responseJson.account.uuid)\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{password_validado}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{email_validado}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Origin",
+						"value": "https://www.segundamano.mx",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Base {{Base64}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{url_base_ecomerce}}/nga/api/v1.1/private/accounts?lang=es",
+					"protocol": "https",
+					"host": [
+						"{{url_base_ecomerce}}"
+					],
+					"path": [
+						"nga",
+						"api",
+						"v1.1",
+						"private",
+						"accounts"
+					],
+					"query": [
+						{
+							"key": "lang",
+							"value": "es"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "editar datos del usuario",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validar status code\", ()=>{\r",
+							"    pm.response.to.have.status(200)\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar que el body responde en Json\", function(){\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar que responda el header Content Type\", () =>{\r",
+							"    pm.response.to.have.header(\"Content-type\")\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8')\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json')\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El texto corresponde a lo esperado esta dentro de la respuesta\", ()=>{\r",
+							"    pm.expect(pm.response.text()).to.include('account');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar que el tiempo de respuesta esta abajo de los 1500ms\", ()=>{\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar que el response no venga vacio\", ()=>{\r",
+							"    pm.response.to.be.not.null;  \r",
+							"    pm.expect(pm.response.json).to.not.eql(null);  \r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true,
+					"content-type": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "tag:scmcoord.com,2013:api {{token}}",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*",
+						"type": "text"
+					},
+					{
+						"key": "Origin",
+						"value": "https://www.segundamano.mx",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"account\":{\"name\":\"Dulcecito\",\"phone\":\"8884567890\",\"professional\":false}}"
+				},
+				"url": {
+					"raw": "https://{{url_base_ecomerce}}/nga/api/v1{{account_id}}?lang=es",
+					"protocol": "https",
+					"host": [
+						"{{url_base_ecomerce}}"
+					],
+					"path": [
+						"nga",
+						"api",
+						"v1{{account_id}}"
+					],
+					"query": [
+						{
+							"key": "lang",
+							"value": "es"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar balance monedas virtuales",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validar status code\", ()=>{\r",
+							"    pm.response.to.have.status(200)\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar que el body responde en Json\", function(){\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar que responda el header Content Type\", () =>{\r",
+							"    pm.response.to.have.header(\"Content-type\")\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8')\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json')\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El texto corresponde a lo esperado esta dentro de la respuesta\", ()=>{\r",
+							"    pm.expect(pm.response.text()).to.include('unread');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar que el tiempo de respuesta esta abajo de los 1500ms\", ()=>{\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar que el response no venga vacio\", ()=>{\r",
+							"    pm.response.to.be.not.null;  \r",
+							"    pm.expect(pm.response.json).to.not.eql(null);  \r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "tag:scmcoord.com,2013:api {{token}}",
+						"type": "text"
+					},
+					{
+						"key": "Origin",
+						"value": "https://www.segundamano.mx",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{url_base_ecomerce}}/nga/api/v1/api/users/{{uuid}}/counter?lang=es",
+					"protocol": "https",
+					"host": [
+						"{{url_base_ecomerce}}"
+					],
+					"path": [
+						"nga",
+						"api",
+						"v1",
+						"api",
+						"users",
+						"{{uuid}}",
+						"counter"
+					],
+					"query": [
+						{
+							"key": "lang",
+							"value": "es"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear un nuevo anuncio",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let email = pm.environment.get('email_validado');\r",
+							"let pass = pm.environment.get('pass_validado');\r",
+							"\r",
+							"let encode_1 = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(email + ':' + pass));\r",
+							"\r",
+							"console.log(\"Base64: \",encode_1);\r",
+							"\r",
+							"// url crear un token https://{{url_base}}/nga/api/v1.1/private/accounts?lang=es\r",
+							"\r",
+							"pm.environment.set(\"Base64 email\", encode_1);\r",
+							"\r",
+							"let url = pm.environment.get('url_base_ecomerce')\r",
+							"\r",
+							"pm.sendRequest({\r",
+							"    url: 'https://' + url + '/nga/api/v1.1/private/accounts/insert?lang=es',\r",
+							"    method: 'POST',\r",
+							"    header: 'authorization: Basic ' + encode_1\r",
+							"}, function(err,res){\r",
+							"   let json_response = res.json()\r",
+							"   let error = err;\r",
+							"   console.log(\"Error en el request: \", error)\r",
+							"   console.log(\"Respuesta de request: \", json_response)  \r",
+							"   pm.environment.set('token',json_response.access_token)   \r",
+							"}\r",
+							");\r",
+							"\r",
+							"let uuid = pm.environment.get('uuid')\r",
+							"let token = pm.environment.get('token')\r",
+							"console.log(\"token error:\", token)\r",
+							"\r",
+							"let encode_2 = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(uuid + ':' + token));\r",
+							"\r",
+							"pm.environment.set('TokenUp', encode_2)\r",
+							"console.log(\"New token: \", encode_2)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic {{TokenUp}}",
+						"type": "text"
+					},
+					{
+						"key": "Origin",
+						"value": "https://www.segundamano.mx",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-source",
+						"value": "PHOENIX_DESKTOP",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"images\":\"7815466751.jpg\",\"category\":\"8144\",\"subject\":\"Chiles xalapeño en frío y capeados\",\"body\":\"Ricos chiles poblanos. En frío o capeados. De relleno de puerco o de pollo o de queso. Cantidad mínima 5 chiles\",\"price\":\"20\",\"region\":\"32\",\"municipality\":\"2163\",\"area\":\"24743\",\"phone_hidden\":\"true\",\"show_phone\":\"false\",\"contact_phone\":\"3344556677\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{url_base_ecomerce}}/v2/accounts/{{uuid}}/up",
+					"protocol": "https",
+					"host": [
+						"{{url_base_ecomerce}}"
+					],
+					"path": [
+						"v2",
+						"accounts",
+						"{{uuid}}",
+						"up"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear una direccion",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Validar status code\", ()=>{\r",
+							"    pm.response.to.have.status(201)\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar que el body responde en Json\", function(){\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar que responda el header Content Type\", () =>{\r",
+							"    pm.response.to.have.header(\"Content-type\")\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json')\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El texto corresponde a lo esperado esta dentro de la respuesta\", ()=>{\r",
+							"    pm.expect(pm.response.text()).to.include('addressID');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar que el tiempo de respuesta esta abajo de los 1500ms\", ()=>{\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar que el response no venga vacio\", ()=>{\r",
+							"    pm.response.to.be.not.null;  \r",
+							"    pm.expect(pm.response.json).to.not.eql(null);  \r",
+							"})\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let email = pm.environment.get('email_validado');\r",
+							"let pass = pm.environment.get('pass_validado');\r",
+							"\r",
+							"let encode_1 = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(email + ':' + pass));\r",
+							"\r",
+							"console.log(\"Base64: \",encode_1);\r",
+							"\r",
+							"// url crear un token https://{{url_base}}/nga/api/v1.1/private/accounts?lang=es\r",
+							"\r",
+							"pm.environment.set(\"Base64 email\", encode_1);\r",
+							"\r",
+							"let url = pm.environment.get('url_base_ecomerce')\r",
+							"\r",
+							"pm.sendRequest({\r",
+							"    url: 'https://' + url + '/nga/api/v1.1/private/accounts/insert?lang=es',\r",
+							"    method: 'POST',\r",
+							"    header: 'authorization: Basic ' + encode_1\r",
+							"}, function(err,res){\r",
+							"   let json_response = res.json()\r",
+							"   let error = err;\r",
+							"   console.log(\"Error en el request: \", error)\r",
+							"   console.log(\"Respuesta de request: \", json_response)  \r",
+							"   pm.environment.set('token',json_response.access_token)\r",
+							"}\r",
+							");\r",
+							"\r",
+							"let uuid = pm.environment.get('uuid')\r",
+							"let token = pm.environment.get('token')\r",
+							"console.log(\"token error:\", token)\r",
+							"\r",
+							"let encode_2 = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(uuid + ':' + token));\r",
+							"\r",
+							"pm.environment.set('TokenUp', encode_2)\r",
+							"console.log(\"New token: \", encode_2)\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							" "
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true,
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic {{TokenUp}}",
+						"type": "text"
+					},
+					{
+						"key": "Origin",
+						"value": "https://www.segundamano.mx",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "contact",
+							"value": "Luis Gomez",
+							"type": "text"
+						},
+						{
+							"key": "phone",
+							"value": "1111222233",
+							"type": "text"
+						},
+						{
+							"key": "rfc",
+							"value": "GOBD581225",
+							"type": "text"
+						},
+						{
+							"key": "zipCode",
+							"value": "90000",
+							"type": "text"
+						},
+						{
+							"key": "exteriorInfo",
+							"value": "Panuco 100",
+							"type": "text"
+						},
+						{
+							"key": "interiorIno",
+							"value": "B",
+							"type": "text"
+						},
+						{
+							"key": "region",
+							"value": "32",
+							"type": "text"
+						},
+						{
+							"key": "municipality",
+							"value": "2114",
+							"type": "text"
+						},
+						{
+							"key": "area",
+							"value": "24149",
+							"type": "text"
+						},
+						{
+							"key": "alias",
+							"value": "Casa principal",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://{{url_base_ecomerce}}/addresses/v1/create",
+					"protocol": "https",
+					"host": [
+						"{{url_base_ecomerce}}"
+					],
+					"path": [
+						"addresses",
+						"v1",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Borrar direccion",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Base {{TokenUp}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{url_base_ecomerce}}/addresses/v/1/delete/{{idAddress}}",
+					"protocol": "https",
+					"host": [
+						"{{url_base_ecomerce}}"
+					],
+					"path": [
+						"addresses",
+						"v",
+						"1",
+						"delete",
+						"{{idAddress}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Restablecer contraseña de una cuenta existente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validar que tenemos un 200\r",
+							"pm.test(\"Validar status code\", ()=>{\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Validar que tenemos un Json\r",
+							"pm.test(\"Validar que el body responde en Json\", function(){\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"// Validar que en el responde header venga un campo\r",
+							"pm.test(\"Validar que responda el header Content Type\", ()=>{\r",
+							"    pm.response.to.have.header(\"Content-Type\")\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8')\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json')\r",
+							"})\r",
+							"\r",
+							"// categories viene en el body\r",
+							"pm.test(\"El texto 'account' esta dentro de la respuesta\"), ()=>{\r",
+							"    pm.expect(pm.response.text()).to.include('account');\r",
+							"}\r",
+							"\r",
+							"//Validar el tiempo de respuesta\r",
+							"pm.test(\"Validar que el tiempo de respuesta esta abajo de los 600ms\", ()=>{\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+							"})\r",
+							"\r",
+							"//Para obtener el response en formato json, imprimirlo y ver su contenido\r",
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"console.log(\"Response: \", pm.response)              // imprime headers\r",
+							"console.log(\"Response Json\", pm.response.json())    // imprime solo el body\r",
+							"console.log(\"Response Json email: \", responseJson.account.email)             // imprime email\r",
+							"console.log(\"Response Json account id: \", responseJson.account.account_id)   // imprime accound_id\r",
+							"\r",
+							"//Validar que no venga no venga vacio\r",
+							"pm.test(\"Validar que el response no venga vacio\", ()=>{\r",
+							"    pm.response.to.be.not.null;  // uso las palabras reservadas de postman\r",
+							"    pm.expect(pm.response.json).to.not.eql(null);  // uso las asserts de chai\r",
+							"})\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true,
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Origin",
+						"value": "https://www.segundamano.mx",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"account\":{\"email\":\"dulcemariagb@hotmail.com\"}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{url_base_ecomerce}}/nga/api/v1/private/accounts/otp?lang=es",
+					"protocol": "https",
+					"host": [
+						"{{url_base_ecomerce}}"
+					],
+					"path": [
+						"nga",
+						"api",
+						"v1",
+						"private",
+						"accounts",
+						"otp"
+					],
+					"query": [
+						{
+							"key": "lang",
+							"value": "es"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Restablecer contraseña de una cuenta inexistente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validar que tenemos un 404 cuando el usuaio (corre no existe)\r",
+							"pm.test(\"Validar status code\", ()=>{\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"test status code is NO FOUND\", function(){\r",
+							"    pm.response.to.be.notFound;    //validar que el status code es NOT FOUND\r",
+							"});\r",
+							"\r",
+							"// Validar que tenemos un Json\r",
+							"pm.test(\"Validar que el body responde en Json\", function(){\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"// Validar que en el responde header venga un campo\r",
+							"pm.test(\"Validar que responda el header Content Type\", ()=>{\r",
+							"    pm.response.to.have.header(\"Content-Type\")\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json')\r",
+							"})\r",
+							"\r",
+							"// categories viene en el body\r",
+							"pm.test(\"El texto 'ACCOUNT_NOT_FOUND' esta dentro de la respuesta\"), ()=>{\r",
+							"    pm.expect(pm.response.text()).to.include('ACCOUNT_NOT_FOUND');\r",
+							"}\r",
+							"\r",
+							"//Validar el tiempo de respuesta\r",
+							"pm.test(\"Validar que el tiempo de respuesta esta abajo de los 600ms\", ()=>{\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+							"})\r",
+							"\r",
+							"//Para obtener el response en formato json, imprimirlo y ver su contenido\r",
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"console.log(\"Response: \", pm.response)              // imprime headers\r",
+							"console.log(\"Response Json\", pm.response.json())    // imprime solo el body\r",
+							"console.log(\"Response Json con error: \", responseJson.error)  // codigo NOT FOUND\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true,
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Origin",
+						"value": "https://www.segundamano.mx",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"account\":{\"email\":\"dulcemariagb1@hotmail.com\"}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{url_base_ecomerce}}/nga/api/v1/private/accounts/otp?lang=es",
+					"protocol": "https",
+					"host": [
+						"{{url_base_ecomerce}}"
+					],
+					"path": [
+						"nga",
+						"api",
+						"v1",
+						"private",
+						"accounts",
+						"otp"
+					],
+					"query": [
+						{
+							"key": "lang",
+							"value": "es"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cambiar password",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validar que tenemos un 200\r",
+							"pm.test(\"Validar status code\", ()=>{\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"console.log(\"Password cambiado: \",pm.request.body.password)\r",
+							"pm.environment.set('password_validado', pm.request.body.password)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*",
+						"type": "text"
+					},
+					{
+						"key": "Origin",
+						"value": "https://www.segundamano.mx",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "tag:scmcoord.com,2013:api {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"account\":{\"password\":\"1234567890\"}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{url_base_ecomerce}}/nga/api/v1{{account_id}}?lang=es",
+					"protocol": "https",
+					"host": [
+						"{{url_base_ecomerce}}"
+					],
+					"path": [
+						"nga",
+						"api",
+						"v1{{account_id}}"
+					],
+					"query": [
+						{
+							"key": "lang",
+							"value": "es"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Editar una direccion",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Validar status code\", ()=>{\r",
+							"    pm.response.to.have.status(200)\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar que el body responde en Json\", function(){\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar que responda el header Content Type\", () =>{\r",
+							"    pm.response.to.have.header(\"Content-type\")\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json')\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El texto corresponde a lo esperado esta dentro de la respuesta\", ()=>{\r",
+							"    pm.expect(pm.response.text()).to.include('modified correctly');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar que el tiempo de respuesta esta abajo de los 1500ms\", ()=>{\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar que el response no venga vacio\", ()=>{\r",
+							"    pm.response.to.be.not.null;  \r",
+							"    pm.expect(pm.response.json).to.not.eql(null);  \r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let email = pm.environment.get('email_validado');\r",
+							"let pass = pm.environment.get('pass_validado');\r",
+							"\r",
+							"let encode_1 = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(email + ':' + pass));\r",
+							"\r",
+							"console.log(\"Base64: \",encode_1);\r",
+							"\r",
+							"// url crear un token https://{{url_base}}/nga/api/v1.1/private/accounts?lang=es\r",
+							"\r",
+							"pm.environment.set(\"Base64 email\", encode_1);\r",
+							"\r",
+							"let url = pm.environment.get('url_base_ecomerce')\r",
+							"\r",
+							"pm.sendRequest({\r",
+							"    url: 'https://' + url + '/nga/api/v1.1/private/accounts/insert?lang=es',\r",
+							"    method: 'POST',\r",
+							"    header: 'authorization: Basic ' + encode_1\r",
+							"}, function(err,res){\r",
+							"   let json_response = res.json()\r",
+							"   let error = err;\r",
+							"   console.log(\"Error en el request: \", error)\r",
+							"   console.log(\"Respuesta de request: \", json_response)  \r",
+							"   pm.environment.set('token',json_response.access_token)   \r",
+							"}\r",
+							");\r",
+							"\r",
+							"let uuid = pm.environment.get('uuid')\r",
+							"let token = pm.environment.get('token')\r",
+							"console.log(\"token error:\", token)\r",
+							"\r",
+							"let encode_2 = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(uuid + ':' + token));\r",
+							"\r",
+							"pm.environment.set('TokenUp', encode_2)\r",
+							"console.log(\"New token: \", encode_2)\r",
+							"\r",
+							"\r",
+							"\r",
+							" "
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true,
+					"content-type": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic {{TokenUp}}",
+						"type": "text"
+					},
+					{
+						"key": "Origin",
+						"value": "https://www.segundamano.mx",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "contact",
+							"value": "Panfilo Rodriguez de Avellaneda",
+							"type": "text"
+						},
+						{
+							"key": "phone",
+							"value": "1122334455",
+							"type": "text"
+						},
+						{
+							"key": "rfc",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "zipCode",
+							"value": "91020",
+							"type": "text"
+						},
+						{
+							"key": "exteriorInfo",
+							"value": "Coatepec 33",
+							"type": "text"
+						},
+						{
+							"key": "interiorIno",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "region",
+							"value": "30",
+							"type": "text"
+						},
+						{
+							"key": "municipality",
+							"value": "2000",
+							"type": "text"
+						},
+						{
+							"key": "area",
+							"value": "24150",
+							"type": "text"
+						},
+						{
+							"key": "alias",
+							"value": "Mi jacalito",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://{{url_base_ecomerce}}/addresses/v1/modify/{{addressID}}",
+					"protocol": "https",
+					"host": [
+						"{{url_base_ecomerce}}"
+					],
+					"path": [
+						"addresses",
+						"v1",
+						"modify",
+						"{{addressID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Agregar a mis favoritos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validar que tenemos un 200\r",
+							"pm.test(\"Validar status code\", ()=>{\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Validar que tenemos un Json\r",
+							"pm.test(\"Validar que el body responde en Json\", function(){\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El texto corresponde a lo esperado esta dentro de la respuesta\", ()=>{\r",
+							"    pm.expect(pm.response.text()).to.include('added');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true,
+					"content-type": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{token}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{uuid}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json;charset=UTF-8",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic {{TokenUp}}",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Origin",
+						"value": "https://www.segundamano.mx",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"list_ids\":[937312032]}"
+				},
+				"url": {
+					"raw": "https://{{url_base_ecomerce}}/favorites/v1/private/accounts/{{uuid}}",
+					"protocol": "https",
+					"host": [
+						"{{url_base_ecomerce}}"
+					],
+					"path": [
+						"favorites",
+						"v1",
+						"private",
+						"accounts",
+						"{{uuid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Borrar un favorito",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validar status code\", ()=>{\r",
+							"    pm.response.to.have.status(200)\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar que el body responde en Json\", function(){\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El texto corresponde a lo esperado esta dentro de la respuesta\", ()=>{\r",
+							"    pm.expect(pm.response.text()).to.include('deleted');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true,
+					"content-type": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{token}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{uuid}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic {{TokenUp}}",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Origin",
+						"value": "https://www.segundamano.mx",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"list_ids\":[937312032]}"
+				},
+				"url": {
+					"raw": "https://{{url_base_ecomerce}}/favorites/v1/private/accounts/{{uuid}}",
+					"protocol": "https",
+					"host": [
+						"{{url_base_ecomerce}}"
+					],
+					"path": [
+						"favorites",
+						"v1",
+						"private",
+						"accounts",
+						"{{uuid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar favoritos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validar status code\", ()=>{\r",
+							"    pm.response.to.have.status(200)\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar que el body responde en Json\", function(){\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El texto corresponde a lo esperado esta dentro de la respuesta\", ()=>{\r",
+							"    pm.expect(pm.response.text()).to.include('Favoritos');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{token}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{uuid}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic {{TokenUp}}",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Origin",
+						"value": "https://www.segundamano.mx",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{url_base_ecomerce}}/favorites/v1/private/accounts/{{uuid}}",
+					"protocol": "https",
+					"host": [
+						"{{url_base_ecomerce}}"
+					],
+					"path": [
+						"favorites",
+						"v1",
+						"private",
+						"accounts",
+						"{{uuid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar alertas",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validar status code\", ()=>{\r",
+							"    pm.response.to.have.status(200)\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar que el body responde en Json\", function(){\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El texto corresponde a lo esperado esta dentro de la respuesta\", ()=>{\r",
+							"    pm.expect(pm.response.text()).to.include('alerts');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{token}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{uuid}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic {{TokenUp}}",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Origin",
+						"value": "https://www.segundamano.mx",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{url_base_ecomerce}}/alerts/v1/private/account/{{uuid}}/alert",
+					"protocol": "https",
+					"host": [
+						"{{url_base_ecomerce}}"
+					],
+					"path": [
+						"alerts",
+						"v1",
+						"private",
+						"account",
+						"{{uuid}}",
+						"alert"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar direcciones",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Validar status code\", ()=>{\r",
+							"    pm.response.to.have.status(200)\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar que el body responde en Json\", function(){\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar que responda el header Content Type\", () =>{\r",
+							"    pm.response.to.have.header(\"Content-type\")\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json')\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El texto corresponde a lo esperado esta dentro de la respuesta\", ()=>{\r",
+							"    pm.expect(pm.response.text()).to.include('modified correctly');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar que el tiempo de respuesta esta abajo de los 1500ms\", ()=>{\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar que el response no venga vacio\", ()=>{\r",
+							"    pm.response.to.be.not.null;  \r",
+							"    pm.expect(pm.response.json).to.not.eql(null);  \r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic {{Token_Up}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					},
+					{
+						"key": "Origin",
+						"value": "https://www.segundamano.mx",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{url_base_ecomerce}}/addresses/v1/get",
+					"protocol": "https",
+					"host": [
+						"{{url_base_ecomerce}}"
+					],
+					"path": [
+						"addresses",
+						"v1",
+						"get"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Agregar una alerta con el metodo PUT",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validar que tenemos un 205 para un metodo no permitido\r",
+							"pm.test(\"Validar status code\", ()=>{\r",
+							"    pm.response.to.have.status(405);\r",
+							"});\r",
+							"/*\r",
+							"// Validar que tenemos un Json\r",
+							"pm.test(\"Validar que el body responde en Json\", function(){\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El texto corresponde a lo esperado esta dentro de la respuesta\", ()=>{\r",
+							"    pm.expect(pm.response.text()).to.include('alert');\r",
+							"});\r",
+							"*/"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true,
+					"content-type": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{token}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{uuid}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic {{TokenUp}}",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Origin",
+						"value": "https://www.segundamano.mx",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"ad_listing_service_filters\":{\"region\":\"23\",\"municipality\":\"1725\",\"category_lv0\":\"8000\",\"category_lv1\":\"8120\",\"q\":\"perros\"}}",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{url_base_ecomerce}}/alerts/v1/private/account/{{uuid}}4/alert",
+					"protocol": "https",
+					"host": [
+						"{{url_base_ecomerce}}"
+					],
+					"path": [
+						"alerts",
+						"v1",
+						"private",
+						"account",
+						"{{uuid}}4",
+						"alert"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
